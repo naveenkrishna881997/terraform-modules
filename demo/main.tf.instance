@@ -1,0 +1,30 @@
+# ------------------------------------------------------------------- #
+# Use this project to provision EC2 servers
+# Map variable defines the details of each server you are provisioning
+#    Name/Tag of the server = Type of the server
+# AUTHOR: ADAM M | +91-9739110917 (WhatsApp/Call)
+# ------------------------------------------------------------------- #
+
+provider "aws" {
+  region = "ap-south-1"
+}
+
+variable "myhosts" {
+  type = map
+  default = {
+    JenkinsMaster = "t2.micro"
+    JenkinsSlave01 = "t2.micro"
+  }
+}
+
+variable "mykey" { 
+  default = "jan24master"
+}
+
+module "server" {
+  for_each = var.myhosts
+  servername = each.key
+  type = each.value  
+  pemfile = var.mykey
+  source = "./modules/instances"
+}

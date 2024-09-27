@@ -1,0 +1,19 @@
+---
+- hosts: "{{server}}"
+  become: true
+  tasks:
+  - name: Update and upgrade apt packages
+    apt:
+      upgrade: yes
+      update_cache: yes
+  - name: Add stable python version from repository
+    apt_repository: repo="ppa:deadsnakes/ppa"
+  - name: Install necessary packages
+    apt: name="{{item}}" state=present
+    loop:
+      - software-properties-common
+      - python3.7
+      - python3-pip
+      - pipx
+  - name: Install checkov
+    command: pipx checkov
