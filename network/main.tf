@@ -57,7 +57,7 @@ resource "aws_route_table" "public" {
     vpc_id = aws_vpc.my_vpc.id
 
     tags = {
-        Name = "DEMO Public RouteTable - WEZVATECH"
+        Name = "DEMO Public RouteTable - NAVEENKRISHNA"
     }
 }
 
