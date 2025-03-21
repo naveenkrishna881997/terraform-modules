@@ -91,4 +91,3 @@ variable "external_nat_ip_ids" {
   type        = list(string)
   default     = []
 }
-
