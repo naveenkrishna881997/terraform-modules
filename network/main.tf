@@ -17,8 +17,8 @@ resource "aws_vpc" "my_vpc" {
 # Create an IGW for your new VPC
 #-------------------------------
 resource "aws_internet_gateway" "my_igw" {
-  count = length(var.public_subnets) > 0 ? 1 : 0
-  vpc_id = aws_vpc.my_vpc.id
+  count = length(var.public_subnets) > 0 ? 1 : 0 # According to this expression first value is true and the second value is False. 0 is false and 1(anything greater than 0) is true.This expression is called Ternary operator
+  vpc_id = aws_vpc.my_vpc.id # implecit dependency (Interpolation- resourcetype.resourcename.attribute)
 
   tags = merge(
     { "Name" = var.name
@@ -53,7 +53,7 @@ resource "aws_subnet" "public_subnet" {
 # Create an RouteTable for your VPC
 #----------------------------------
 resource "aws_route_table" "public" {
-    count = length(var.public_subnets) > 0 ? 1 : 0
+    count = length(var.public_subnets) > 0 ? 1 : 0 # Ternary operator
     vpc_id = aws_vpc.my_vpc.id
 
     tags = {
@@ -73,7 +73,7 @@ resource "aws_route_table_association" "public" {
 }
 
 #----------------------------------
-# Add route entry to the RouteTable
+# Add route entry(Internet traffic) to the RouteTable
 #----------------------------------
 resource "aws_route" "public_internet_gateway" {
   count = length(var.public_subnets) > 0 ? 1 : 0
@@ -144,7 +144,7 @@ resource "aws_route_table" "private" {
     vpc_id = aws_vpc.my_vpc.id
 
     tags = {
-        Name = "DEMO private RouteTable - WEZVATECH"
+        Name = "DEMO private RouteTable - NAVEENKRISHNA"
     }
 }
 
@@ -191,7 +191,7 @@ resource "aws_security_group_rule" "private" {
 }
 
 
-locals {
+locals {                  # Expression       True value                False value
   nat_gateway_ips   = var.reuse_nat_ips ? var.external_nat_ip_ids : try(aws_eip.nat[*].id, [])
 }
 
